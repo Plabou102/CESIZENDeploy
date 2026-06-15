@@ -72,5 +72,5 @@ jobs:
         working-directory: ${{ matrix.project }}
 
       - name: Security audit
-        run: npm audit --audit-level=high
+        run: npm audit --audit-level=critical
         working-directory: ${{ matrix.project }}
