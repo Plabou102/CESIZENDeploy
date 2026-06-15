@@ -1,0 +1,76 @@
+name: CI CESIZEN Deploy
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  build-lint-test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - CESIZENReact
+          - CESIZENAPI
+
+    steps:
+      - name: Clone React
+        run: git clone https://github.com/Plabou102/CESIZENReact.git CESIZENReact
+
+      - name: Clone API
+        run: git clone https://github.com/Plabou102/CESIZENAPI.git CESIZENAPI
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: ${{ matrix.project }}/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{ matrix.project }}
+
+      - name: Build
+        run: npm run build --if-present
+        working-directory: ${{ matrix.project }}
+
+      - name: Lint
+        run: npm run lint --if-present
+        working-directory: ${{ matrix.project }}
+
+      - name: Test
+        run: npm test --if-present
+        working-directory: ${{ matrix.project }}
+
+  audit:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        project:
+          - CESIZENReact
+          - CESIZENAPI
+
+    steps:
+      - name: Clone React
+        run: git clone https://github.com/Plabou102/CESIZENReact.git CESIZENReact
+
+      - name: Clone API
+        run: git clone https://github.com/Plabou102/CESIZENAPI.git CESIZENAPI
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: ${{ matrix.project }}/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+        working-directory: ${{ matrix.project }}
+
+      - name: Security audit
+        run: npm audit --audit-level=high
+        working-directory: ${{ matrix.project }}
