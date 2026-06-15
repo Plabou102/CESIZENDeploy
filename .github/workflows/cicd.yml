@@ -59,7 +59,7 @@ jobs:
         run: git clone https://github.com/Plabou102/CESIZENReact.git CESIZENReact
 
       - name: Clone API
-        run: git clone https://github.com/Plabou102/CESIZENAPI.git CESIZENAPI
+        run: git clone https://x-access-token:${{ secrets.GH_PAT }}@github.com/Plabou102/CESIZENAPI.git CESIZENAPI
 
       - uses: actions/setup-node@v6
         with:
