@@ -16,7 +16,7 @@ jobs:
           - CESIZENAPI
 
     steps:
-      - name: Clone React
+      - name: Clon React
         run: git clone https://github.com/Plabou102/CESIZENReact.git CESIZENReact
 
       - name: Clone API
