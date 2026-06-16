@@ -3,6 +3,8 @@ name: CI CESIZEN Deploy
 on:
   push:
   pull_request:
+  repository_dispatch:
+    types: [api-updated, react-updated]
 
 jobs:
   build-lint-test:
@@ -16,7 +18,7 @@ jobs:
           - CESIZENAPI
 
     steps:
-      - name: Clone Reac
+      - name: Clone React
         run: git clone https://github.com/Plabou102/CESIZENReact.git CESIZENReact
 
       - name: Clone API
