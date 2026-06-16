@@ -2,7 +2,6 @@ services:
   db:
     image: postgres:16
     container_name: cesizen-db
-    restart: unless-stopped
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-cesizen}
       POSTGRES_USER: cesizen
