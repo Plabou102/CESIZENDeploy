@@ -53,6 +53,9 @@ services:
       DATABASE_URL: postgresql://cesizen:${DB_PASSWORD:-cesizen}@db:5432/${POSTGRES_DB:-cesizen}
       NODE_ENV: production
       PORT: 3001
+      CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:5173}
+      JWT_SECRET: ${JWT_SECRET}
+      SEED_PASSWORD: ${SEED_PASSWORD}
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.cesizen-api.rule=Host(`cesizenadame.duckdns.org`) && PathPrefix(`/api`)"

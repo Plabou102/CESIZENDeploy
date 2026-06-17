@@ -173,7 +173,12 @@ jobs:
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u plabou102 --password-stdin
             cd ~/CESIZen
+            printf "CORS_ORIGIN=%s\nJWT_SECRET=%s\nDB_PASSWORD=%s\nSEED_PASSWORD=%s\n" \
+              "${{ secrets.CORS_ORIGIN }}" \
+              "${{ secrets.JWT_SECRET }}" \
+              "${{ secrets.DB_PASSWORD }}" \
+              "${{ secrets.SEED_PASSWORD }}" > .env
             docker compose up -d --pull always
-            sleep 5  # laisser le temps à la BDD de démarrer
+            sleep 5
             docker compose exec api npx prisma db seed
           EOF
