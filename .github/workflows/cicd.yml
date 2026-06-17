@@ -141,5 +141,5 @@ jobs:
           ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u plabou102 --password-stdin
             cd ~/CESIZen
-            docker compose up -d --pull always
+            docker compose up -d
           EOF

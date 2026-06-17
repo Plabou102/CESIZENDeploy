@@ -19,8 +19,6 @@ services:
     image: ghcr.io/plabou102/cesizen-api:main
     container_name: cesizen-api
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
       db:
         condition: service_healthy
@@ -35,20 +33,10 @@ services:
     image: ghcr.io/plabou102/cesizen-react:main
     container_name: cesizen-react
     restart: unless-stopped
-    labels:
-      - "com.centurylinklabs.watchtower.enable=true"
     depends_on:
       - api
     ports:
       - "5173:5173"
-
-  watchtower:
-    image: containrrr/watchtower
-    container_name: cesizen-watchtower
-    restart: unless-stopped
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 60 --label-enable --cleanup
 
 volumes:
   cesizen_pgdata:
