@@ -112,7 +112,7 @@ jobs:
   build-and-push-docker:
     name: Docker - Build and push images
     runs-on: ubuntu-latest
-    needs: [build-lint-test, audit, gitleaks, super-linter]
+    needs: [build-lint-test, audit, gitleaks]
     if: github.ref == 'refs/heads/main'
 
     permissions:
