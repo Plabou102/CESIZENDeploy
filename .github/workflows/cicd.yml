@@ -174,4 +174,6 @@ jobs:
             echo "${{ secrets.GH_PAT }}" | docker login ghcr.io -u plabou102 --password-stdin
             cd ~/CESIZen
             docker compose up -d --pull always
+            sleep 5  # laisser le temps à la BDD de démarrer
+            docker compose exec api npx prisma db seed
           EOF
