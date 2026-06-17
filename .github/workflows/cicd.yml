@@ -181,5 +181,6 @@ jobs:
               "${{ secrets.SEED_PASSWORD }}" > .env
             docker compose up -d --pull always
             sleep 5
+            docker compose exec api npx prisma migrate deploy
             docker compose exec api npx prisma db seed
           EOF
