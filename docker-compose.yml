@@ -1,4 +1,29 @@
 services:
+  traefik:
+    image: "traefik:v2.11"
+    restart: unless-stopped
+    container_name: "traefik"
+    command:
+      - "--log.level=DEBUG"
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge=true"
+      - "--certificatesresolvers.myresolver.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.myresolver.acme.email=adaimebou@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+      - "8080:8080"
+    volumes:
+      - "/home/azureuser/traefik/letsencrypt:/letsencrypt"
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+    networks:
+      - web
+
   db:
     image: postgres:16
     container_name: cesizen-db
@@ -14,6 +39,8 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
+    networks:
+      - web
 
   api:
     image: ghcr.io/plabou102/cesizen-api:main
@@ -26,8 +53,14 @@ services:
       DATABASE_URL: postgresql://cesizen:${DB_PASSWORD:-cesizen}@db:5432/${POSTGRES_DB:-cesizen}
       NODE_ENV: production
       PORT: 3001
-    ports:
-      - "3001:3001"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cesizen-api.rule=Host(`cesizenadame.duckdns.org`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.cesizen-api.entrypoints=websecure"
+      - "traefik.http.routers.cesizen-api.tls.certresolver=myresolver"
+      - "traefik.http.services.cesizen-api.loadbalancer.server.port=3001"
+    networks:
+      - web
 
   frontend:
     image: ghcr.io/plabou102/cesizen-react:main
@@ -35,8 +68,18 @@ services:
     restart: unless-stopped
     depends_on:
       - api
-    ports:
-      - "5173:5173"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.cesizen-frontend.rule=Host(`cesizenadame.duckdns.org`)"
+      - "traefik.http.routers.cesizen-frontend.entrypoints=websecure"
+      - "traefik.http.routers.cesizen-frontend.tls.certresolver=myresolver"
+      - "traefik.http.services.cesizen-frontend.loadbalancer.server.port=5173"
+    networks:
+      - web
 
 volumes:
   cesizen_pgdata:
+
+networks:
+  web:
+    name: web
