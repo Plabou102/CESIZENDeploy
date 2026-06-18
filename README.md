@@ -28,7 +28,7 @@ La pipeline se déclenche sur :
 
 | Job | Description | Branche |
 |-----|-------------|---------|
-| `build-lint-test` | Build, lint et tests unitaires | Toutes |
+| `build-lint-test-e2e` | Build, lint, tests unitaires et end to end | Toutes |
 | `audit` | Audit de sécurité des dépendances (`npm audit`) | Toutes |
 | `gitleaks` | Scan de secrets dans le code | Toutes |
 | `super-linter` | Analyse statique multi-langage | Toutes |
