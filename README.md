@@ -3,8 +3,6 @@
 
 Repo de déploiement centralisé pour le projet CESIZEN — application de bien-être mental développée dans le cadre du cursus CESI.
 
-[![CI CESIZEN Deploy](https://github.com/Plabou102/CESIZENDeploy/actions/workflows/cicd.yml/badge.svg)](https://github.com/Plabou102/CESIZENDeploy/actions/workflows/cicd.yml)
-
 ## Architecture
 
 Le projet est composé de 3 repos :
