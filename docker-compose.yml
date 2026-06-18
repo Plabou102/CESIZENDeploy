@@ -41,6 +41,7 @@ services:
         - "traefik.http.middlewares.cesizen-api-strip.stripprefix.prefixes=/api"
         - "traefik.http.routers.cesizen-api.middlewares=cesizen-api-strip"
         - "traefik.http.services.cesizen-api.loadbalancer.server.port=3001"
+        - "traefik.http.routers.cesizen-api.priority=10"
       networks:
         - web
 
@@ -97,6 +98,7 @@ services:
       - "traefik.http.routers.cesizen-frontend.entrypoints=websecure"
       - "traefik.http.routers.cesizen-frontend.tls.certresolver=myresolver"
       - "traefik.http.services.cesizen-frontend.loadbalancer.server.port=5173"
+      - "traefik.http.routers.cesizen-frontend.priority=1"
     networks:
       - web
 
