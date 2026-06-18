@@ -47,6 +47,24 @@ jobs:
         run: npm test --if-present
         working-directory: ${{ matrix.project }}
 
+            - name: Install Playwright browsers
+        if: matrix.project == 'CESIZENReact'
+        run: npx playwright install --with-deps
+        working-directory: CESIZENReact
+
+      - name: Run React E2E tests
+        if: matrix.project == 'CESIZENReact'
+        run: npm run test:e2e
+        working-directory: CESIZENReact
+
+      - name: Upload Playwright report
+        if: always() && matrix.project == 'CESIZENReact'
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: CESIZENReact/playwright-report
+          retention-days: 30
+
   audit:
     runs-on: ubuntu-latest
 
