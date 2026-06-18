@@ -47,7 +47,7 @@ jobs:
         run: npm test --if-present
         working-directory: ${{ matrix.project }}
 
-            - name: Install Playwright browsers
+      - name: Install Playwright browsers
         if: matrix.project == 'CESIZENReact'
         run: npx playwright install --with-deps
         working-directory: CESIZENReact
