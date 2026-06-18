@@ -35,10 +35,12 @@ services:
         - uptime_kuma_data:/app/data
       labels:
         - "traefik.enable=true"
-        - "traefik.http.routers.uptime-kuma.rule=Host(`uptime.cesizenadame.duckdns.org`)"
-        - "traefik.http.routers.uptime-kuma.entrypoints=websecure"
-        - "traefik.http.routers.uptime-kuma.tls.certresolver=myresolver"
-        - "traefik.http.services.uptime-kuma.loadbalancer.server.port=3001"
+        - "traefik.http.routers.cesizen-api.rule=Host(`cesizenadame.duckdns.org`) && PathPrefix(`/api`)"
+        - "traefik.http.routers.cesizen-api.entrypoints=websecure"
+        - "traefik.http.routers.cesizen-api.tls.certresolver=myresolver"
+        - "traefik.http.middlewares.cesizen-api-strip.stripprefix.prefixes=/api"
+        - "traefik.http.routers.cesizen-api.middlewares=cesizen-api-strip"
+        - "traefik.http.services.cesizen-api.loadbalancer.server.port=3001"
       networks:
         - web
 
